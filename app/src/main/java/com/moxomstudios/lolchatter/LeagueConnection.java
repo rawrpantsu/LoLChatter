@@ -50,13 +50,17 @@ public class LeagueConnection {
 
 
 
-    //TODO MOBILE PRESENCE BREAKING SMACK!
     protected boolean loginRiot(String mUsername, String mPassword)
     {
 
         XMPPTCPConnectionConfiguration.Builder conf = XMPPTCPConnectionConfiguration.builder();
 
-
+        SmackConfiguration.setDefaultParsingExceptionCallback(new ParsingExceptionCallback() {
+            @Override
+            public void handleUnparsablePacket(UnparsablePacket stanzaData) throws Exception {
+                Log.i("HANDLE", stanzaData.toString());
+            }
+        });
 
 
 
@@ -121,32 +125,19 @@ public class LeagueConnection {
             e.printStackTrace();
         }
 
-        Log.i("LOL", "GETTING ROSTER");
 
-
-        Roster roster = Roster.getInstanceFor(connection);
-        Collection<RosterEntry> entries = roster.getEntries();
-        Presence presence;
-
-
-        Log.i("LOL", "GET;" + roster.getGroupCount());
-        for (RosterEntry entry : entries) {
-            presence = roster.getPresence(entry.getUser());
-
-            Log.i("LOL", "USER: " + entry.getUser());
-            Log.i("LOL", "name: " + presence.getType().name());
-            Log.i("LOL", "status: " + presence.getStatus());
-            Log.i("LOL", "name2: " + entry.getName());
-            if(entry.getName().contains("Simba007") || entry.getName().contains("HyDra") || entry.getName().contains("Moogle"))
-            {
-                int a = 5;
-            }
-
-        }
-        rosterOnlineStatus();
         return true;
 
         // TODO: register the new account here.
+    }
+
+    public Roster getContacts()
+    {
+        Roster roster = Roster.getInstanceFor(connection);
+        //Collection<RosterEntry> entries = roster.getEntries();
+      //  Presence presence;
+
+        return roster;
     }
 
     public void rosterOnlineStatus(){
