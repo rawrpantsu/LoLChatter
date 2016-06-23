@@ -7,6 +7,8 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.jivesoftware.smack.roster.Roster;
+
 import java.util.Random;
 
 public class LeagueService extends Service {
@@ -48,6 +50,10 @@ public class LeagueService extends Service {
         return mGenerator.nextInt(100);
     }
 
+    public Roster getContacts()
+    {
+        return league_client.getContacts();
+    }
     public boolean login(String username, String password)
     {
        return league_client.loginRiot(username,password);
